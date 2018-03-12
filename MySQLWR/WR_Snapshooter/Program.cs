@@ -36,7 +36,7 @@ namespace WR_Snapshooter
             long snapId = DBHelper.CreateSnapshot(connDst, srcName);
             WriteLog("Snapshot created: ID = " + snapId);
 
-            List<string> tablesToProcess = new List<string>() { "wraccounts", "wrevents_statements_summary_by_digest", "wrevents_waits_summary_global_by_event_name" };
+            List<string> tablesToProcess = new List<string>() { "wraccounts" , "wrevents_statements_summary_by_digest", "wrevents_waits_summary_global_by_event_name" };
             List<WRTableData> tablesDataPieces = new List<WRTableData>();
 
             WriteLog("Init & load started");
