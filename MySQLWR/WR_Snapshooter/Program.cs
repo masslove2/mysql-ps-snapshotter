@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,22 +24,22 @@ namespace WR_Snapshooter
         }
 
         static void Main(string[] args)
-        {
+        {                       
             if (args.Length < 2) { Console.WriteLine("Usage: WR_Snapshooter.exe srcConnName dstConnName");  Environment.Exit(0);}
 
             string srcName = args[0]; // "AMWAY-PERF";
             string dstName = args[1];
             WriteLog(String.Format("Started {0} -> {1}", srcName, dstName));
-
-            MySqlConnection connSrc = DBHelper.Connect(srcName);
+                        
             MySqlConnection connDst = DBHelper.Connect(dstName);
 
             long snapId = DBHelper.CreateSnapshot(connDst, srcName);
             WriteLog("Snapshot created: ID = " + snapId);
 
-            List<string> tablesToProcess = new List<string>() { "wraccounts" , "wrevents_statements_summary_by_digest", "wrevents_waits_summary_global_by_event_name" };
+            List<string> tablesToProcess = ConfigurationManager.GetSection("TablesToProcess") as List<string>;
             List<WRTableData> tablesDataPieces = new List<WRTableData>();
 
+            MySqlConnection connSrc = DBHelper.Connect(srcName);
             WriteLog("Init & load started");
             // init & load data from src
             foreach (string tableName in tablesToProcess)
@@ -52,6 +53,7 @@ namespace WR_Snapshooter
                 tablesDataPieces.Add(data);
             }
             WriteLog("Init & load finished");
+            connSrc.Close();
 
             WriteLog("SaveData started");
             // save to dst
@@ -63,8 +65,7 @@ namespace WR_Snapshooter
             WriteLog("SaveData finished");
 
             // cleanUp
-            DBHelper.Commit(connDst);
-            connSrc.Close();
+            DBHelper.Commit(connDst);            
             connDst.Close();
 
             WriteLog("Wrapping up");

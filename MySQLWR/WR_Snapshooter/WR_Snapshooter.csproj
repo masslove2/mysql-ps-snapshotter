@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Helpers\DBHelper.cs" />
     <Compile Include="Helpers\MySqlDataReaderHelper.cs" />
+    <Compile Include="Helpers\TablesToProcessSection.cs" />
     <Compile Include="Model\WRTableData.cs" />
     <Compile Include="Model\WRTableMeta.cs" />
     <Compile Include="Program.cs" />
@@ -66,6 +67,7 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="cstrings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
