@@ -36,30 +36,53 @@ namespace WR_Snapshooter.Model
             }
         }
 
+        private void SaveData_FlushRows(long snapId, List<DataRow> rows)
+        {
+            int countRows = rows.Count;
+            if (countRows == 0) { return; }
+
+            string fieldsCsv = WRTableMeta.SNAPID_COLUMN_NAME + "," + String.Join(",", TableMeta.FieldsCollection.Keys);
+            string placeholdersCsv = "(?," + String.Join(",", Enumerable.Repeat("?", TableMeta.FieldsCollection.Keys.Count)) + ")";
+
+            string sqlInsert = String.Format("INSERT INTO {0} ({1}) VALUES {2}", TableMeta.DstTableName, fieldsCsv, String.Join(",", Enumerable.Repeat(placeholdersCsv, countRows)));
+
+            int i = 0;
+            using (MySqlCommand cmd = new MySqlCommand(sqlInsert, DstConn))
+            {
+                cmd.Parameters.Clear();
+                
+                foreach (DataRow row in rows)
+                {
+                    i++;
+                    cmd.Parameters.AddWithValue("snapId" + i, snapId);
+                    foreach (DataColumn fld in TableData.Columns)
+                    {
+                        cmd.Parameters.AddWithValue(fld.ColumnName + i, row[fld.ColumnName]);
+                    }                    
+                }
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public void SaveDataToDst(long snapId)
         {
             if (TableData == null) { throw new Exception("No data loaded"); }
 
-            //TableData.Columns.Add(WRTableMeta.SNAPID_COLUMN_NAME, Type.GetType("int"));
+            int chunkSize = 100;
             
-            string fieldsCsv = WRTableMeta.SNAPID_COLUMN_NAME + "," + String.Join(",", TableMeta.FieldsCollection.Keys);
-            string placeholdersCsv = "?," + String.Join(",", Enumerable.Repeat("?", TableMeta.FieldsCollection.Keys.Count));
+            List<DataRow> rowsCollection = new List<DataRow>();
 
-            string sqlInsert = String.Format("INSERT INTO {0} ({1}) VALUES ({2})",TableMeta.DstTableName, fieldsCsv, placeholdersCsv);
-            using (MySqlCommand cmd = new MySqlCommand(sqlInsert, DstConn))
+            foreach (DataRow row in TableData.Rows)
             {
-                foreach (DataRow row in TableData.Rows)
+                rowsCollection.Add(row);
+                if (rowsCollection.Count >= chunkSize)
                 {
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.AddWithValue("snapId", snapId);
-                    foreach (DataColumn fld in TableData.Columns)
-                    {
-                        cmd.Parameters.AddWithValue(fld.ColumnName, row[fld.ColumnName]);
-                    }
-                    cmd.ExecuteNonQuery();
-                }
+                    SaveData_FlushRows(snapId, rowsCollection);
+                    rowsCollection.Clear();
+                };                                   
             }
+            SaveData_FlushRows(snapId, rowsCollection); // final
         }
-
     }
 }
