@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WR_Snapshooter.Helpers
+namespace WRMySQL.Helpers
 {
     public static class MySqlDataReaderHelper
     {
@@ -43,12 +43,12 @@ namespace WR_Snapshooter.Helpers
         {
             switch (type)
             {
-                case "string": return SafeGetString(reader, colName); 
-                case "ulong": return SafeGetBigInt(reader, colName); 
-                case "datetime": return SafeGetDateTime(reader, colName); 
+                case "string": return SafeGetString(reader, colName);
+                case "ulong": return SafeGetBigInt(reader, colName);
+                case "datetime": return SafeGetDateTime(reader, colName);
                 default:
                     throw new Exception("Unknown type = " + type);
-            }            
+            }
         }
 
 

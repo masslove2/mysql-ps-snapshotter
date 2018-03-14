@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WR_Snapshooter.Model
+namespace WRMySQL.Model
 {
     public class WRTableData
     {
@@ -50,7 +50,7 @@ namespace WR_Snapshooter.Model
             using (MySqlCommand cmd = new MySqlCommand(sqlInsert, DstConn))
             {
                 cmd.Parameters.Clear();
-                
+
                 foreach (DataRow row in rows)
                 {
                     i++;
@@ -58,7 +58,7 @@ namespace WR_Snapshooter.Model
                     foreach (DataColumn fld in TableData.Columns)
                     {
                         cmd.Parameters.AddWithValue(fld.ColumnName + i, row[fld.ColumnName]);
-                    }                    
+                    }
                 }
 
                 cmd.ExecuteNonQuery();
@@ -70,7 +70,7 @@ namespace WR_Snapshooter.Model
             if (TableData == null) { throw new Exception("No data loaded"); }
 
             int chunkSize = 100;
-            
+
             List<DataRow> rowsCollection = new List<DataRow>();
 
             foreach (DataRow row in TableData.Rows)
@@ -80,7 +80,7 @@ namespace WR_Snapshooter.Model
                 {
                     SaveData_FlushRows(snapId, rowsCollection);
                     rowsCollection.Clear();
-                };                                   
+                };
             }
             SaveData_FlushRows(snapId, rowsCollection); // final
         }

@@ -8,6 +8,8 @@ create table wrSnapshot
 , hostName varchar(1024)
 , snapTime datetime
 );
+alter table wrSnapshot add (comments varchar(255));
+
 
 CREATE TABLE `wraccounts` (
    snapId int , 

@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WR_Snapshooter", "WR_Snapshooter\WR_Snapshooter.csproj", "{B037B925-4559-4F2B-A542-D3E1741DA083}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlowLog_Snapshotter", "SlowLog_Snapshotter\SlowLog_Snapshotter.csproj", "{22C1782B-215D-483A-B9B1-3F80C09FA382}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WRMySQL", "WRMySQL\WRMySQL.csproj", "{67594253-28CD-48CF-8B9F-D1A46E0A2075}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{B037B925-4559-4F2B-A542-D3E1741DA083}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B037B925-4559-4F2B-A542-D3E1741DA083}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B037B925-4559-4F2B-A542-D3E1741DA083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22C1782B-215D-483A-B9B1-3F80C09FA382}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22C1782B-215D-483A-B9B1-3F80C09FA382}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22C1782B-215D-483A-B9B1-3F80C09FA382}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22C1782B-215D-483A-B9B1-3F80C09FA382}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67594253-28CD-48CF-8B9F-D1A46E0A2075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67594253-28CD-48CF-8B9F-D1A46E0A2075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67594253-28CD-48CF-8B9F-D1A46E0A2075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67594253-28CD-48CF-8B9F-D1A46E0A2075}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

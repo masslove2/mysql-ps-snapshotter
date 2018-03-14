@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace WR_Snapshooter.Helpers
+namespace WRMySQL.Helpers
 {
     public class TablesToProcessSection : IConfigurationSectionHandler
     {

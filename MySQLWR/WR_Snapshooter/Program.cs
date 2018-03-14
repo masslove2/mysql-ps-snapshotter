@@ -6,8 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WR_Snapshooter.Helpers;
-using WR_Snapshooter.Model;
+using WRMySQL.Helpers;
+using WRMySQL.Model;
 
 namespace WR_Snapshooter
 {
@@ -25,15 +25,16 @@ namespace WR_Snapshooter
 
         static void Main(string[] args)
         {                       
-            if (args.Length < 2) { Console.WriteLine("Usage: WR_Snapshooter.exe srcConnName dstConnName");  Environment.Exit(0);}
+            if (args.Length < 2) { Console.WriteLine("Usage: WR_Snapshooter.exe srcConnName dstConnName [snapshot-comments]");  Environment.Exit(0);}
 
             string srcName = args[0]; // "AMWAY-PERF";
             string dstName = args[1];
+            string snapshotComments = (args.Length > 2) ? args[2] : String.Empty;
             WriteLog(String.Format("Started {0} -> {1}", srcName, dstName));
                         
             MySqlConnection connDst = DBHelper.Connect(dstName);
 
-            long snapId = DBHelper.CreateSnapshot(connDst, srcName);
+            long snapId = DBHelper.CreateSnapshot(connDst, srcName, snapshotComments);
             WriteLog("Snapshot created: ID = " + snapId);
 
             List<string> tablesToProcess = ConfigurationManager.GetSection("TablesToProcess") as List<string>;
