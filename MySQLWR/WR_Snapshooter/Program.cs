@@ -19,8 +19,6 @@ namespace WR_Snapshooter
 
             Console.WriteLine(outMessage);
             File.AppendAllText("output.log", outMessage + "\n");
-
-
         }
 
         static void Main(string[] args)

@@ -288,3 +288,4 @@ __pycache__/
 *.xsd.cs
 /MySQLWR/WR_Snapshooter/App.config
 /MySQLWR/WR_Snapshooter/cstrings.config
+/MySQLWR/SlowLog_Snapshotter/cstrings_slowlog.config

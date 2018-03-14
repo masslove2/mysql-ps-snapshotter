@@ -24,11 +24,16 @@ namespace WRMySQL.Model
             DstConn = dstConn;
         }
 
-        public void LoadDataFromSrc()
+        /// <summary>
+        /// whereCondition should include WHERE keyword etc: e.g.
+        ///   WHERE id between 7 and 42
+        /// </summary>
+        /// <param name="whereCondition"></param>
+        public void LoadDataFromSrc(string whereCondition = "")
         {
             string ColumnsCsv = String.Join(",", TableMeta.FieldsCollection.Keys);
 
-            string sqlSelect = String.Format("SELECT {0} FROM {1}", ColumnsCsv, TableMeta.SrcTableName);
+            string sqlSelect = String.Format("SELECT {0} FROM {1} {2}", ColumnsCsv, TableMeta.SrcTableName, whereCondition);
             using (MySqlDataAdapter da = new MySqlDataAdapter(sqlSelect, SrcConn))
             {
                 TableData = new DataTable();

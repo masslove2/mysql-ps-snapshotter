@@ -1,5 +1,5 @@
 create table wrslow_logsnapshot
-( snapId int
+( snapId int auto_increment primary key
 , hostName varchar(50)
 , snapTime datetime
 , dateBeg DATETIME
@@ -21,4 +21,5 @@ CREATE TABLE wrslow_log (
   `sql_text` mediumtext NOT NULL,
   `thread_id` bigint(21) unsigned NOT NULL
 );
+
 

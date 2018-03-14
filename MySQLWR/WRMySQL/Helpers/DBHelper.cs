@@ -34,6 +34,22 @@ namespace WRMySQL.Helpers
             }
         }
 
+        public static long CreateSlow_LogSnapshot(MySqlConnection conn, string servName, DateTime timeBeg, DateTime timeEnd)
+        {
+            string sqlIns = "INSERT INTO wrslow_logsnapshot (hostName, snapTime, dateBeg, dateEnd) VALUES (?,?,?,?)";
+            using (MySqlCommand cmd = new MySqlCommand(sqlIns, conn))
+            {
+                cmd.Parameters.AddWithValue("hostName", servName);
+                cmd.Parameters.AddWithValue("snapTime", DateTime.Now);
+                cmd.Parameters.AddWithValue("dateBeg", timeBeg);
+                cmd.Parameters.AddWithValue("dateEnd", timeEnd);
+
+                cmd.ExecuteNonQuery();
+
+                return cmd.LastInsertedId;
+            }
+        }
+
         public static void Commit(MySqlConnection conn)
         {
             string sql = "commit";
