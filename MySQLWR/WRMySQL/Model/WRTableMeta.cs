@@ -10,18 +10,33 @@ namespace WRMySQL.Model
     public class WRTableMeta
     {
         public const string TABLE_SCHEMA = "WR";
+        public const string DST_TABLE_PREFIX = "wr";
+        public const string DEFAULT_SRC_TABLE_SCHEMA = "performance_schema";
         public const string SNAPID_COLUMN_NAME = "snapId";
 
         public MySqlConnection Conn { get; set; }
+        public string SrcTableSchema { get; set; }
         public string SrcTableName { get; set; }
         public string DstTableName { get; set; }
         public Dictionary<string, string> FieldsCollection; // fieldname -> data type
 
-        public WRTableMeta(MySqlConnection conn, string dstTableName)
+        public string SrcTableNameWithSchema { get { return String.Format("{0}.{1}", SrcTableSchema, SrcTableName); } }
+
+        public WRTableMeta(MySqlConnection conn, string srcTableNameWithSchema)
         {
             Conn = conn;
-            DstTableName = dstTableName;
-            SrcTableName = DstTableName.Substring(2); // remove prefix wr
+
+            string[] parts = srcTableNameWithSchema.Split('.');
+            if (parts.Length > 1)
+            {
+                SrcTableSchema = parts[0]; SrcTableName = parts[1];
+            }
+            else
+            {
+                SrcTableSchema = DEFAULT_SRC_TABLE_SCHEMA; SrcTableName = srcTableNameWithSchema;
+            }
+
+            DstTableName = DST_TABLE_PREFIX + SrcTableName;            
             FieldsCollection = new Dictionary<string, string>();
         }
 

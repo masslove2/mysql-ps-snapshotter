@@ -33,7 +33,7 @@ namespace WRMySQL.Model
         {
             string ColumnsCsv = String.Join(",", TableMeta.FieldsCollection.Keys);
 
-            string sqlSelect = String.Format("SELECT {0} FROM {1} {2}", ColumnsCsv, TableMeta.SrcTableName, whereCondition);
+            string sqlSelect = String.Format("SELECT {0} FROM {1} {2}", ColumnsCsv, TableMeta.SrcTableNameWithSchema, whereCondition);
             using (MySqlDataAdapter da = new MySqlDataAdapter(sqlSelect, SrcConn))
             {
                 TableData = new DataTable();
