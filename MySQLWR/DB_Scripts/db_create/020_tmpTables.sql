@@ -15,3 +15,13 @@ CREATE TABLE `tmpRepWaits` (
   `COUNT_STAR` bigint(20) unsigned NOT NULL,
   `SUM_TIMER_WAIT` bigint(20) unsigned NOT NULL
 );
+
+CREATE TABLE `tmprepglobal_status` (
+  `snapIdBeg` int(3) NOT NULL DEFAULT '0',
+  `snapIdEnd` int(3) NOT NULL DEFAULT '0',
+  `variable_name` varchar(64) NOT NULL DEFAULT '',
+  `deltaValue` varchar(1024) DEFAULT NULL,
+  `minimumValue` varchar(1024) DEFAULT NULL,
+  `maximumValue` varchar(1024) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+

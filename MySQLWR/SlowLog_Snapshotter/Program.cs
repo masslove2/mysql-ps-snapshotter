@@ -42,23 +42,34 @@ namespace SlowLog_Snapshotter
             WriteLog("Snapshot created: ID = " + snapId);
             
             MySqlConnection connSrc = DBHelper.Connect(srcName);
-            string tableName = "wrslow_log";
+            string tableName = "mysql.slow_log";
             WriteLog("Init & load started");
             
             WRTableMeta meta = new WRTableMeta(connDst, tableName);
             meta.FillFieldsCollection();
-            
+
+            bool haveNewData = true;
             WRTableData data = new WRTableData(meta, connSrc, connDst);
-            data.LoadDataFromSrc(String.Format("WHERE start_time between '{0}' and '{1}'",timeBeg.ToString("yyyy-MM-dd HH:mm:ss"), timeEnd.ToString("yyyy-MM-dd HH:mm:ss")));
-            WriteLog("Init & load finished");
+            int batchSize = 10000;
+            int currentOffset = 0;
+            int curDataRowNum = 0;
+            while (haveNewData)
+            {
+                WriteLog(String.Format("Init & load (offset = {0})", currentOffset));
+                data.LoadDataFromSrc(String.Format("WHERE start_time between '{0}' and '{1}' LIMIT {2} OFFSET {3}", timeBeg.ToString("yyyy-MM-dd HH:mm:ss"), timeEnd.ToString("yyyy-MM-dd HH:mm:ss"),batchSize,currentOffset));
+
+                WriteLog("SaveData started");
+                data.SaveDataToDst(snapId);
+                DBHelper.Commit(connDst);
+                WriteLog("SaveData finished");
+                
+                currentOffset += batchSize;
+                haveNewData = (data.TableData.Rows.Count > 0);
+            };
+
             connSrc.Close();
 
-            WriteLog("SaveData started");
-            data.SaveDataToDst(snapId);            
-            WriteLog("SaveData finished");
-
-            // cleanUp
-            DBHelper.Commit(connDst);
+            // cleanUp            
             connDst.Close();
 
             WriteLog("Wrapping up");
